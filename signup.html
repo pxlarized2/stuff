@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --hover-blue: #0077ff;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      transition: border-color 0.4s ease, color 0.4s ease;
+    }
+
+    .signup-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .image-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .image-container img {
+      width: 150px;
+      height: auto;
+    }
+
+    .signup-box {
+      width: 300px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input[type="text"],
+    .password-container,
+    button {
+      height: 60px;
+      font-size: 16px;
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 0 10px;
+      outline: none;
+    }
+
+    input[type="text"] {
+      width: 100%;
+    }
+
+    .password-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .password-container input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .password-container:hover {
+      border-color: var(--hover-blue);
+    }
+
+    .password-toggle {
+      width: 40px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .password-container:hover .password-toggle {
+      color: var(--hover-blue);
+    }
+
+    button {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: var(--hover-blue);
+      color: var(--hover-blue);
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .footer-text {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-weight: bold;
+      font-size: 12px;
+      color: #666;
+      text-decoration: none;
+      transition: color 0.4s ease;
+    }
+
+    .footer-text:hover {
+      color: var(--hover-blue);
+    }
+
+    .links {
+      font-size: 14px;
+      text-align: center;
+    }
+
+    .links a {
+      color: #666;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .links a:hover {
+      color: var(--hover-blue);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="signup-container">
+    <div class="image-container">
+      <img src="FNT.png" alt="Logo" />
+    </div>
+
+    <div class="signup-box">
+      <form id="signupForm">
+        <input type="text" placeholder="Username" required>
+
+        <div class="password-container">
+          <input type="password" placeholder="Create Password" required id="password1">
+          <span class="password-toggle" id="togglePassword1"><i class="fa-solid fa-eye-slash"></i></span>
+        </div>
+
+        <div class="password-container">
+          <input type="password" placeholder="Confirm Password" required id="password2">
+          <span class="password-toggle" id="togglePassword2"><i class="fa-solid fa-eye-slash"></i></span>
+        </div>
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <div class="error-message" id="errorMessage">Passwords don't match.</div>
+
+      <div class="links">
+        <a href="index.html">Already have an account? Log In</a>
+      </div>
+    </div>
+  </div>
+
+  <a class="footer-text" href="https://x.com/yensenye" target="_blank">Made by Fent</a>
+
+  <script>
+  const password1 = document.getElementById('password1');
+  const password2 = document.getElementById('password2');
+  const errorMessage = document.getElementById('errorMessage');
+  const form = document.getElementById('signupForm');
+
+  form.addEventListener('submit', function(e) {
+    const pw1 = password1.value;
+    const pw2 = password2.value;
+
+    if (pw1 !== pw2) {
+      e.preventDefault();
+      errorMessage.textContent = "Passwords don't match.";
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    // Check for strong password
+    const hasUpper = /[A-Z]/.test(pw1);
+    const hasNumber = /[0-9]/.test(pw1);
+    const hasSymbol = /[!@#$%^&*(),.?":{}|<>]/.test(pw1);
+
+    if (!hasUpper || !hasNumber || !hasSymbol) {
+      e.preventDefault();
+      let msg = "Password must include:";
+      if (!hasUpper) msg += " an uppercase letter,";
+      if (!hasNumber) msg += " a number,";
+      if (!hasSymbol) msg += " a symbol,";
+      msg = msg.replace(/,$/, "."); // Remove trailing comma
+      errorMessage.textContent = msg;
+      errorMessage.style.display = 'block';
+      return;
+    }
+
+    errorMessage.style.display = 'none';
+  });
+
+  // Toggle visibility function
+  function setupToggle(toggleId, inputId) {
+    const toggle = document.getElementById(toggleId);
+    const input = document.getElementById(inputId);
+
+    toggle.addEventListener('click', function () {
+      const type = input.type === 'password' ? 'text' : 'password';
+      input.type = type;
+      toggle.innerHTML = type === 'password'
+        ? '<i class="fa-solid fa-eye-slash"></i>'
+        : '<i class="fa-solid fa-eye"></i>';
+    });
+  }
+
+  setupToggle('togglePassword1', 'password1');
+  setupToggle('togglePassword2', 'password2');
+</script>
